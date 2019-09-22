@@ -1,22 +1,23 @@
 import processing.sound.*;
 
 //Audio manager
-AudioManager myManager = new AudioManager(50);
+AudioManager audioManager = new AudioManager(50);
 
 // Mandala
 MandalaCreator creator = new MandalaCreator(10);
 
 void setup() {
   // initial setups
-  size(500, 500);
+  size(512, 512);
   frameRate(5);
 
-  // create the input stream
-  //myManager.startListening(new AudioIn(this, 0), new Amplitude(this));
+  // create the input stream 
+  audioManager.startListening(new AudioIn(this, 0), new Amplitude(this), new FFT(this, 64));
 
 }
 
-void draw() { 
+void draw() {  
+  
   // set background color
   background(255);
   stroke(0);
