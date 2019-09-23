@@ -1,36 +1,57 @@
 class MandalaCreator {
 
   int slices;
-  color lineColor = color(0, 0, 255);
+  color lineColor = color(255);
+  color transparentColor = color(255,0,0,0.0);
   float lineWidth = 1;
+  boolean isFilled = false;
 
   MandalaCreator (int numberOfSlices) {
+    
+    // number based on the current ambient sound
     slices = numberOfSlices;
   }
 
-  void createMandala() {
-
-    // random number of elements
+  void createMandala(float scale) {
+    
+    // i = number based on the current ambient sound
+    for(int i = 0; i < 10; i++) {
+      // random number of elements
+      int element = int(random(0, 3));
+      
+      float positionX = random(30, width/2);
+      float positionY = random(30, height/2);
+      
+      switch (element) {
+        case 0:
+          drawCircle(new Point(positionX, positionY), 50.0);
+          break;
+        case 1:
+          drawArc(new Point(positionX, positionY), 90.0, 60.0, radians(0), radians(85), OPEN);
+          break;
+        case 2:
+          drawSquare(new Point(positionX, positionY), 20.0);
+          break;
+        case 3:
+          drawRect(new Point(positionX, positionY), 25.0, 70.0);
+          break;
+        case 4:
+          drawLine(new Point(positionX, positionY), new Point(random(30, width/2), random(30, height/2)));
+          break;
+      }
+    }
+    
 
     // random color in mandala
-
-    creator.lineColor = color(0, 0, 0);
-    creator.drawLine(new Point(width/2, height/2), new Point(100.0, 100.0));
-    creator.lineColor = color(255, 0, 0);
-    creator.drawCircle(new Point(350, 120), 50.0);
-    creator.lineColor = color(0, 255, 0);
-    creator.drawCircle(new Point(440, 150), 50.0);
-    creator.lineColor = color(0, 0, 255);
-    creator.drawRect(new Point(60, 60), 10.0, 25.0);
-    creator.lineColor = color(200, 200, 0);
-    creator.drawSquare(new Point(200, 170), 20.0);
-    creator.lineColor = color(0, 150, 150);
-    creator.drawArc(new Point(150, 70), 60.0, 30.0, radians(0), radians(45), PIE);
+  
+    //translate(width/2, height/2);
+    //scale(scale);
+       
   }
 
-  void drawLine(Point start, Point end) {
+  private void drawLine(Point start, Point end) {
     stroke(lineColor);
-    strokeWeight(lineWidth);
+    strokeWeight(lineWidth); 
 
     for (int i = 0; i < slices; i++) {
       float rotation = (2*PI) * float(i)/slices;
@@ -41,9 +62,10 @@ class MandalaCreator {
     }
   }
 
-  void drawCircle(Point start, float radius) {
+  private void drawCircle(Point start, float radius) {
     stroke(lineColor);
     strokeWeight(lineWidth);
+    fill((isFilled) ? lineColor : transparentColor);
 
     for (int i = 0; i < slices; i++) {
       float rotation = (2*PI) * float(i)/slices;
@@ -53,9 +75,10 @@ class MandalaCreator {
     }
   }
 
-  void drawRect(Point start, float rectWidth, float rectHeight) {
+  private void drawRect(Point start, float rectWidth, float rectHeight) {
     stroke(lineColor);
     strokeWeight(lineWidth);
+    fill((isFilled) ? lineColor : transparentColor);
 
     for (int i = 0; i < slices; i++) {
       float rotation = (2*PI) * float(i)/slices;
@@ -72,9 +95,10 @@ class MandalaCreator {
     rotate(0);
   }
 
-  void drawSquare(Point start, float rectSize) {
+  private void drawSquare(Point start, float rectSize) {
     stroke(lineColor);
     strokeWeight(lineWidth);
+    fill((isFilled) ? lineColor : transparentColor);
 
     for (int i = 0; i < slices; i++) {
       float rotation = (2*PI) * float(i)/slices;
@@ -89,9 +113,10 @@ class MandalaCreator {
     }
   }
 
-  void drawArc(Point start, float arcWidth, float arcHeight, float angleStart, float angleStop, int mode) {
+  private void drawArc(Point start, float arcWidth, float arcHeight, float angleStart, float angleStop, int mode) {
     stroke(lineColor);
     strokeWeight(lineWidth);
+    fill((isFilled) ? lineColor :transparentColor);
 
     for (int i = 0; i < slices; i++) {
       float rotation = (2*PI) * float(i)/slices;
@@ -106,7 +131,7 @@ class MandalaCreator {
     }
   }
 
-  void drawOutlines() {
+  private void drawOutlines() {
     float radius = width*3;
     float linesWidth = 0.5;
     color linesColor = color(200, 200, 200);
@@ -123,4 +148,11 @@ class MandalaCreator {
       line(width/2, height/2, newPoint.x, newPoint.y);
     }
   }
+  
+  //void draw() {
+  //  stroke(150);
+  //  strokeWeight(1); 
+  //  drawOutlines();
+  //}
+  
 }

@@ -4,12 +4,12 @@ import processing.sound.*;
 AudioManager audioManager = new AudioManager(50);
 
 // Mandala
-MandalaCreator creator = new MandalaCreator(10);
+MandalaCreator creator = new MandalaCreator(5);
 
 void setup() {
   // initial setups
   size(512, 512);
-  frameRate(5);
+  frameRate(2);
 
   // create the input stream 
   audioManager.startListening(new AudioIn(this, 0), new Amplitude(this), new FFT(this, 64));
@@ -18,14 +18,15 @@ void setup() {
 
 void draw() {  
   
+  float numberOfSlices = map(mouseY, 0, 500, 6, 50);
+  creator.slices = int(numberOfSlices);
+  
   // set background color
-  background(255);
-  stroke(0);
-  strokeWeight(1);
+  background(0);
   
   // draw elements
-  creator. createMandala();
+  creator.createMandala(1.0);
 
   // draw mandala outlines
-  creator.drawOutlines();
+  //creator.drawOutlines();
 }
