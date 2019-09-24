@@ -12,10 +12,14 @@ class MandalaCreator {
     slices = numberOfSlices;
   }
 
-  void createMandala(float scale) {
+  void createMandala(int amplitude, float scale) {
+    
+    this.slices = amplitude < 3 ? int(random(1, 5)) : amplitude;
+    
+    amplitude = amplitude < 3 ? int(random(1, 5)) : amplitude;
     
     // i = number based on the current ambient sound
-    for(int i = 0; i < 10; i++) {
+    for(int i = 0; i < amplitude; i++) {
       // random number of elements
       int element = int(random(0, 3));
       

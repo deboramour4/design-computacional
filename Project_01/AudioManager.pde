@@ -5,10 +5,15 @@ class AudioManager {
   
   float sum;
   float sFactor;
-  float[] history = new float[500];
 
   AudioManager(float factor) {
     sFactor = factor;
+  }
+  
+  int amplitude() {
+    float sum = (amp.analyze() )* sFactor;
+    //float rmsScaled = sum * (height/20) * mouseY;
+    return int(sum);
   }
   
   void startListening(AudioIn in, Amplitude amp, FFT fft) {
