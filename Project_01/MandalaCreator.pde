@@ -1,162 +1,101 @@
 class MandalaCreator {
 
   int slices;
-  color lineColor = color(255);
-  color transparentColor = color(255,0,0,0.0);
-  float lineWidth = 1;
-  boolean isFilled = false;
+
+  // Store elements in each area
+  ArrayList<Shape> area1 = new ArrayList();
+  ArrayList<Shape> area2 = new ArrayList();
+  ArrayList<Shape> area3 = new ArrayList();
 
   MandalaCreator (int numberOfSlices) {
-    
+
     // number based on the current ambient sound
     slices = numberOfSlices;
+  
+    createAreas();
+    
   }
 
   void createMandala(int amplitude, float scale) {
+
+    //this.slices = amplitude < 3 ? int(random(1, 5)) : amplitude;
+
+    //amplitude = amplitude < 3 ? int(random(1, 5)) : amplitude;
+    drawOutlines();
     
-    this.slices = amplitude < 3 ? int(random(1, 5)) : amplitude;
-    
-    amplitude = amplitude < 3 ? int(random(1, 5)) : amplitude;
-    
+    drawArea(area1); 
+
+    Circle c = (Circle) area1.get(0);
+    c.pulse(amplitude * 10);
+
     // i = number based on the current ambient sound
-    for(int i = 0; i < amplitude; i++) {
-      // random number of elements
-      int element = int(random(0, 3));
-      
-      float positionX = random(30, width/2);
-      float positionY = random(30, height/2);
-      
-      switch (element) {
-        case 0:
-          drawCircle(new Point(positionX, positionY), 50.0);
-          break;
-        case 1:
-          drawArc(new Point(positionX, positionY), 90.0, 60.0, radians(0), radians(85), OPEN);
-          break;
-        case 2:
-          drawSquare(new Point(positionX, positionY), 20.0);
-          break;
-        case 3:
-          drawRect(new Point(positionX, positionY), 25.0, 70.0);
-          break;
-        case 4:
-          drawLine(new Point(positionX, positionY), new Point(random(30, width/2), random(30, height/2)));
-          break;
-      }
-    }
-    
+    //for(int i = 0; i < amplitude; i++) {
+    //  // random number of elements
+    //  int element = int(random(0, 3));
+
+    //  float positionX = random(30, width/2);
+    //  float positionY = random(30, height/2);
 
     // random color in mandala
-  
+
     //translate(width/2, height/2);
     //scale(scale);
-       
   }
 
-  private void drawLine(Point start, Point end) {
-    stroke(lineColor);
-    strokeWeight(lineWidth); 
+  void createAreas() {
 
-    for (int i = 0; i < slices; i++) {
-      float rotation = (2*PI) * float(i)/slices;
+    // three areas in total
+    for (int i = 0; i < 3; i++) {
+      switch (i) {
+      case 0:
+        //determinated positions
+        Point position = new Point( int(random(10, 100)), int(random(10, 100)) );
+        int size = int(random(10, 100));
+        
+        //area1.add( new Line(new Point(40, 20), new Point(150, 150)) );
+        //area1.add( new Square(position, size));
+        //area1.add( new Square(new Point(100, 100), 100));
+        //area1.add( new Square(new Point(10, 10), 10));
+        //area1.add( new Rect(new Point(180, 100), 100, 20) );
+        area1.add( new Circle(position, size) );
+        //area1.add( new Arc(new Point(0, 0), 150.0, 50.0, radians(0), radians(85), OPEN) );
+        break;
+      case 1:
 
-      Point newStart = start.rotatePoint(rotation);
-      Point newEnd = end.rotatePoint(rotation);
-      line(newStart.x, newStart.y, newEnd.x, newEnd.y);
+        break;
+      case 3:
+
+        break;
+      }
     }
   }
 
-  private void drawCircle(Point start, float radius) {
-    stroke(lineColor);
-    strokeWeight(lineWidth);
-    fill((isFilled) ? lineColor : transparentColor);
+  void drawArea(ArrayList<Shape> array) {
+    for (int i = 0; i < array.size(); i++) {
 
-    for (int i = 0; i < slices; i++) {
-      float rotation = (2*PI) * float(i)/slices;
-
-      Point newStart = start.rotatePoint(rotation);
-      circle(newStart.x, newStart.y, radius);
-    }
-  }
-
-  private void drawRect(Point start, float rectWidth, float rectHeight) {
-    stroke(lineColor);
-    strokeWeight(lineWidth);
-    fill((isFilled) ? lineColor : transparentColor);
-
-    for (int i = 0; i < slices; i++) {
-      float rotation = (2*PI) * float(i)/slices;
-
-      Point newStart = start.rotatePoint(rotation); 
-
-      pushMatrix();
-      translate(newStart.x, newStart.y);
-      rotate((2*PI) * float(i)/slices);  
-      rect(0, 0, rectWidth, rectHeight);
-      popMatrix();
-    }
-
-    rotate(0);
-  }
-
-  private void drawSquare(Point start, float rectSize) {
-    stroke(lineColor);
-    strokeWeight(lineWidth);
-    fill((isFilled) ? lineColor : transparentColor);
-
-    for (int i = 0; i < slices; i++) {
-      float rotation = (2*PI) * float(i)/slices;
-
-      Point newStart = start.rotatePoint(rotation);
-
-      pushMatrix();
-      translate(newStart.x, newStart.y);
-      rotate((2*PI) * float(i)/slices);  
-      square(0, 0, rectSize);
-      popMatrix();
-    }
-  }
-
-  private void drawArc(Point start, float arcWidth, float arcHeight, float angleStart, float angleStop, int mode) {
-    stroke(lineColor);
-    strokeWeight(lineWidth);
-    fill((isFilled) ? lineColor :transparentColor);
-
-    for (int i = 0; i < slices; i++) {
-      float rotation = (2*PI) * float(i)/slices;
-
-      Point newStart = start.rotatePoint(rotation);
-
-      pushMatrix();
-      translate(newStart.x, newStart.y);
-      rotate((2*PI) * float(i)/slices);
-      arc(0, 0, arcWidth, arcHeight, angleStart, angleStop, mode);
-      popMatrix();
+      if (array.get(i) instanceof Line) { 
+        Line l = (Line) array.get(i);
+        l.display(slices);
+      } else if (array.get(i) instanceof Circle) {
+        Circle c = (Circle) array.get(i);
+        c.display(slices);
+      } else if (array.get(i) instanceof Rect) {
+        Rect r = (Rect) array.get(i);
+        r.display(slices);
+      } else if (array.get(i) instanceof Square) {
+        Square s = (Square) array.get(i);
+        s.display(slices);
+      } else if (array.get(i) instanceof Arc) {
+        Arc a = (Arc) array.get(i);
+        a.display(slices);
+      }
     }
   }
 
   private void drawOutlines() {
-    float radius = width*3;
-    float linesWidth = 0.5;
-    color linesColor = color(200, 200, 200);
-
-    stroke(linesColor);
-    strokeWeight(linesWidth);
-
-    for (int i = 0; i < slices; i++) {
-      // calculate new x and y
-      float angle = (2*PI) * float(i)/slices;
-      Point newPoint = new Point((width/2) + radius * cos(angle), (height/2) + radius * sin(angle));
-
-      // draw the line
-      line(width/2, height/2, newPoint.x, newPoint.y);
-    }
+    Line line = new Line(new Point(0.0, 0.0), new Point(1500, 1500));
+    line.lineWeight = 0.5;
+    line.lineColor = color(50);
+    line.display(slices);
   }
-  
-  //void draw() {
-  //  stroke(150);
-  //  strokeWeight(1); 
-  //  drawOutlines();
-  //}
-  
 }
