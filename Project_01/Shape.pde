@@ -49,30 +49,19 @@ class Circle extends Shape {
   }
 
   private void pulse(float range) {
-    //boolean isGrowing = true;
-    
-    //if (isGrowing) {
-    //  this.size += 1;
-    //} else {
-    //  this.size -= 1;
-    //}
-    this.size = range;
-
-    //if (this.size > 0 && this.size <= this.originalSize + range) {
-    //  isGrowing = false;
-    //} else {
-    //  isGrowing = true;
-    //}
+    this.size = originalSize + range;
   }
 }
 
 // Represents the square
 class Square extends Shape {
   float size;
+  float originalSize;
 
   Square (Point point, float size) {  
     super(point);
     this.size = size;
+    this.originalSize = size;
   }
 
   private void display(int slices) {
@@ -86,6 +75,10 @@ class Square extends Shape {
       square(start.x, start.y, size);
       popMatrix();
     }
+  }
+  
+  private void pulse(float range) {
+    this.size = originalSize + range;
   }
 }
 

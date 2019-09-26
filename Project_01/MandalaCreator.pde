@@ -11,32 +11,31 @@ class MandalaCreator {
 
     // number based on the current ambient sound
     slices = numberOfSlices;
-  
+
     createAreas();
-    
   }
 
   void createMandala(int amplitude, float scale) {
 
-    //this.slices = amplitude < 3 ? int(random(1, 5)) : amplitude;
-
-    //amplitude = amplitude < 3 ? int(random(1, 5)) : amplitude;
-    drawOutlines();
+    //6 sec
+    if (frameCount % 60 == 0) {
+      this.slices = amplitude < 10 ? 10 : amplitude;
+    }
     
-    drawArea(area1); 
+    println(amplitude); 
 
-    Circle c = (Circle) area1.get(0);
-    c.pulse(amplitude * 10);
+    if (amplitude < 6) {
+      drawArea(area1, amplitude);
+    } else if (amplitude < 24) {
+      drawArea(area1, amplitude); 
+      drawArea(area2, amplitude);
+    } else {
+      drawArea(area1, amplitude); 
+      drawArea(area2, amplitude); 
+      drawArea(area3, amplitude);
+    }
 
-    // i = number based on the current ambient sound
-    //for(int i = 0; i < amplitude; i++) {
-    //  // random number of elements
-    //  int element = int(random(0, 3));
-
-    //  float positionX = random(30, width/2);
-    //  float positionY = random(30, height/2);
-
-    // random color in mandala
+    //Circle c = (Circle) area1.get(0);
 
     //translate(width/2, height/2);
     //scale(scale);
@@ -44,33 +43,38 @@ class MandalaCreator {
 
   void createAreas() {
 
+    area1.clear();
+    area2.clear();
+    area3.clear();
+
     // three areas in total
     for (int i = 0; i < 3; i++) {
       switch (i) {
       case 0:
         //determinated positions
-        Point position = new Point( int(random(10, 100)), int(random(10, 100)) );
-        int size = int(random(10, 100));
-        
-        //area1.add( new Line(new Point(40, 20), new Point(150, 150)) );
-        //area1.add( new Square(position, size));
-        //area1.add( new Square(new Point(100, 100), 100));
-        //area1.add( new Square(new Point(10, 10), 10));
-        //area1.add( new Rect(new Point(180, 100), 100, 20) );
-        area1.add( new Circle(position, size) );
-        //area1.add( new Arc(new Point(0, 0), 150.0, 50.0, radians(0), radians(85), OPEN) );
+        area1.add( new Circle(new Point(int(random(0, 50)), int(random(0, 50))), int(random(5, 40))) );
+        area1.add( new Circle(new Point(int(random(10, 100)), int(random(10, 100))), int(random(5, 30))) );
+        area1.add( new Square(new Point(int(random(10, 100)), int(random(10, 100))), int(random(5, 30))) );
         break;
       case 1:
-
+        //determinated positions
+        area2.add( new Circle(new Point(random(130, 250), random(130, 250)), random(10, 75)) );
+        area2.add( new Square(new Point(random(130, 250), random(130, 250)), random(10, 75)) );
+        area2.add( new Line(new Point(random(0, 175), random(0, 175)), new Point(random(100, 250), random(100, 250))) );     
+        area2.add( new Arc(new Point(random(130, 250), random(130, 250)), random(50, 150), random(50, 150), radians(0), radians(random(85, 270)), OPEN) );
         break;
-      case 3:
-
+      case 2:
+        //determinated positions
+        area3.add( new Circle(new Point(random(275, 375), random(275, 375)), random(25, 100)) );
+        area3.add( new Square(new Point(random(275, 375), random(275, 375)), random(25, 100)) );
+        area3.add( new Arc(new Point(random(275, 375), random(275, 375)), random(80, 200), random(80, 200), radians(0), radians(random(85, 270)), OPEN) );
+        area3.add( new Arc(new Point(random(275, 375), random(275, 375)), random(100, 250), random(100, 250), radians(0), radians(random(45, 180)), OPEN) );
         break;
       }
     }
   }
 
-  void drawArea(ArrayList<Shape> array) {
+  void drawArea(ArrayList<Shape> array, float amplitude) {
     for (int i = 0; i < array.size(); i++) {
 
       if (array.get(i) instanceof Line) { 
@@ -79,12 +83,14 @@ class MandalaCreator {
       } else if (array.get(i) instanceof Circle) {
         Circle c = (Circle) array.get(i);
         c.display(slices);
+        c.pulse(amplitude * 2);
       } else if (array.get(i) instanceof Rect) {
         Rect r = (Rect) array.get(i);
         r.display(slices);
       } else if (array.get(i) instanceof Square) {
         Square s = (Square) array.get(i);
         s.display(slices);
+        s.pulse(amplitude * 2);
       } else if (array.get(i) instanceof Arc) {
         Arc a = (Arc) array.get(i);
         a.display(slices);
