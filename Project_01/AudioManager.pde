@@ -28,10 +28,10 @@ class AudioManager {
   
   
   float average(float list[]) { 
-        float sum = 0; 
-        for (int i = 0; i < list.length; i++) {
-            sum += list[i]*10000; 
-        }
-        return sum / list.length; 
-    }
+      float sum = 0; 
+      for (int i = 0; i < list.length; i++) {
+          sum += list[i]*10000; 
+      }
+      return sum / list.length; 
+  }
 }

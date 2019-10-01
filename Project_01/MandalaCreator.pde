@@ -1,6 +1,10 @@
 class MandalaCreator {
 
   int slices;
+  float lineWeight = 2;
+  color lineColor = color(255);
+  color transparentColor = color(255, 0.0, 0.0, 0.0);
+  color fillColor;
 
   // Store elements in each area
   ArrayList<Shape> area1 = new ArrayList();
@@ -9,7 +13,7 @@ class MandalaCreator {
 
   MandalaCreator (int numberOfSlices) {
 
-    // number based on the current ambient sound
+    // initial number
     slices = numberOfSlices;
 
     createAreas();
@@ -17,16 +21,23 @@ class MandalaCreator {
 
   void createMandala(int amplitude, float scale) {
 
-    //6 sec
-    if (frameCount % 60 == 0) {
+    // Every 5 seconds create new random areas
+    if (frameCount % 300 == 0) {
+      createAreas();
+    }
+    
+    // Every 10 seconds updates de number of slices
+    if (frameCount % 600 == 0) {
       this.slices = amplitude < 10 ? 10 : amplitude;
     }
     
-    println(amplitude); 
-
-    if (amplitude < 6) {
+    // Draw mandala slices outlines 
+    drawOutlines();
+    
+    // Draw specifics areas depending on the current amplitude
+    if (amplitude < 10) {
       drawArea(area1, amplitude);
-    } else if (amplitude < 24) {
+    } else if (amplitude < 25) {
       drawArea(area1, amplitude); 
       drawArea(area2, amplitude);
     } else {
@@ -34,20 +45,17 @@ class MandalaCreator {
       drawArea(area2, amplitude); 
       drawArea(area3, amplitude);
     }
-
-    //Circle c = (Circle) area1.get(0);
-
-    //translate(width/2, height/2);
-    //scale(scale);
+   
   }
 
   void createAreas() {
 
+    // Erase the areas created before
     area1.clear();
     area2.clear();
     area3.clear();
 
-    // three areas in total
+    // Three areas in total
     for (int i = 0; i < 3; i++) {
       switch (i) {
       case 0:
@@ -60,11 +68,17 @@ class MandalaCreator {
         //determinated positions
         area2.add( new Circle(new Point(random(130, 250), random(130, 250)), random(10, 75)) );
         area2.add( new Square(new Point(random(130, 250), random(130, 250)), random(10, 75)) );
-        area2.add( new Line(new Point(random(0, 175), random(0, 175)), new Point(random(100, 250), random(100, 250))) );     
+        area2.add( new Line(new Point(random(0, 175), random(0, 175)), new Point(random(100, 250), random(100, 250))) ); 
+        
+        //float random1 = random(130, 250); float random2 = random(130, 250); float random3 = random(50, 150);
+        //float random4 = random(50, 150); float random5 = random(85, 270);
+        
         area2.add( new Arc(new Point(random(130, 250), random(130, 250)), random(50, 150), random(50, 150), radians(0), radians(random(85, 270)), OPEN) );
+        area2.add( new Arc(new Point(random(10, 250), random(10, 250)), random(80, 150), random(80, 150), radians(0), radians(random(85, 270)), OPEN) );
         break;
       case 2:
         //determinated positions
+        area3.add( new Circle(new Point(random(275, 375), random(275, 375)), random(25, 100)) );
         area3.add( new Circle(new Point(random(275, 375), random(275, 375)), random(25, 100)) );
         area3.add( new Square(new Point(random(275, 375), random(275, 375)), random(25, 100)) );
         area3.add( new Arc(new Point(random(275, 375), random(275, 375)), random(80, 200), random(80, 200), radians(0), radians(random(85, 270)), OPEN) );
@@ -75,11 +89,18 @@ class MandalaCreator {
   }
 
   void drawArea(ArrayList<Shape> array, float amplitude) {
+        
+    lineColor = color(int(frameCount % 360), 190, 255);
+    stroke(lineColor);
+    strokeWeight(lineWeight);
+    fill(transparentColor);
+    
     for (int i = 0; i < array.size(); i++) {
 
       if (array.get(i) instanceof Line) { 
         Line l = (Line) array.get(i);
         l.display(slices);
+        l.grow();
       } else if (array.get(i) instanceof Circle) {
         Circle c = (Circle) array.get(i);
         c.display(slices);
@@ -94,14 +115,17 @@ class MandalaCreator {
       } else if (array.get(i) instanceof Arc) {
         Arc a = (Arc) array.get(i);
         a.display(slices);
+        a.grow();
       }
     }
   }
 
   private void drawOutlines() {
+    stroke(50);
+    strokeWeight(1);
+    fill(transparentColor);
+    
     Line line = new Line(new Point(0.0, 0.0), new Point(1500, 1500));
-    line.lineWeight = 0.5;
-    line.lineColor = color(50);
     line.display(slices);
   }
 }

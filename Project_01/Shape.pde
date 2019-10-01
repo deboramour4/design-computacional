@@ -1,10 +1,5 @@
 abstract class Shape {
   Point start;
-  float lineWeight = 1;
-  color lineColor = color(255);
-  color transparentColor = color(255, 0, 0, 0.0);
-  color fillColor;
-  boolean isFilled = false;
 
   Shape (Point point) {  
     this.start = point;
@@ -35,11 +30,6 @@ class Circle extends Shape {
   }
 
   private void display(int slices) {
-    stroke(lineColor);
-    strokeWeight(lineWeight);
-
-    fill((isFilled) ? lineColor : transparentColor);
-
     for (int i = 0; i < slices; i++) {     
       pushMatrix();
       rotate((2*PI) * float(i)/slices);  
@@ -65,10 +55,6 @@ class Square extends Shape {
   }
 
   private void display(int slices) {
-    stroke(lineColor);
-    strokeWeight(lineWeight);
-    fill((isFilled) ? lineColor : transparentColor);
-
     for (int i = 0; i < slices; i++) {
       pushMatrix();
       rotate((2*PI) * float(i)/slices);  
@@ -92,15 +78,17 @@ class Line extends Shape {
   }
 
   private void display(int slices) {
-    stroke(lineColor);
-    strokeWeight(lineWeight); 
-
     for (int i = 0; i < slices; i++) {
       pushMatrix();
       rotate((2*PI) * float(i)/slices);  
       line(start.x, start.y, end.x, end.y);
       popMatrix();
     }
+  }
+  
+  private void grow() {
+    this.end.x = end.x + 1;
+    this.end.y = end.y + 1;
   }
 }
 
@@ -116,18 +104,13 @@ class Rect extends Shape {
   }
 
   private void display(int slices) {
-    stroke(lineColor);
-    strokeWeight(lineWeight);
-    fill((isFilled) ? lineColor : transparentColor);
-
     for (int i = 0; i < slices; i++) {
       pushMatrix();
       rotate((2*PI) * float(i)/slices);  
       rect(start.x, start.y, width_r, height_r);
       popMatrix();
     }
-
-    rotate(0);
+    //rotate(0);
   }
 }
 
@@ -149,15 +132,16 @@ class Arc extends Shape {
   }
 
   private void display(int slices) {
-    stroke(lineColor);
-    strokeWeight(lineWeight);
-    fill((isFilled) ? lineColor :transparentColor);
-
     for (int i = 0; i < slices; i++) {
       pushMatrix();
       rotate((2*PI) * float(i)/slices);
       arc(start.x, start.y, width_a, height_a, start_a, stop_a, mode);
       popMatrix();
     }
+  }
+  
+  private void grow() {
+    this.width_a = width_a + 0.5;
+    this.height_a = height_a + 0.5;
   }
 }

@@ -8,12 +8,13 @@ MandalaCreator creator = new MandalaCreator(12);
 
 void setup() {
   // initial setups
-  //fullScreen();
   size(displayWidth, displayHeight);
 
   // create the input stream 
   audioManager.startListening(new AudioIn(this, 0), new Amplitude(this), new FFT(this, 64));
-
+  
+  // color mode
+  colorMode(HSB);
 }
 
 void draw() {  
@@ -24,5 +25,9 @@ void draw() {
   rectMode(CENTER);
   
   // draw elements
-  creator.createMandala(audioManager.amplitude(), 1.0);
+  int amplitudeRelative = audioManager.amplitude() * mouseY/100;
+  creator.createMandala(amplitudeRelative, 1.0);
+  
+  println(amplitudeRelative);
+  
 }
