@@ -26,8 +26,8 @@ class Face {
 
   // Show rectangle with id number
   void display() {
-    fill(0,0,255,timer);
-    stroke(0,0,255);
+    fill(255,255,255,timer);
+    stroke(0,0,0);
     rect((width-r.x)-width/2 -r.width,r.y-height/2,r.width, r.height);
     fill(255,timer*2);
     textSize(20);
